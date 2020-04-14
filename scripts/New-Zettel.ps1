@@ -43,5 +43,5 @@ tags:
 ---
 
 # $Title
-"@ | Set-Content $file
+"@ | Set-Content $file -Encoding utf8NoBOM
 [string](Get-ChildItem $file)
