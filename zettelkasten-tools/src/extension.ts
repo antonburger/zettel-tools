@@ -87,10 +87,13 @@ var matchingType
 var content
 
 for (var i = 0; i < types.length; i++) {
-    var type = types[i];
-    if (hasClipboardFormat(type)) {
+    var type = types[i]
+    // Don't use hasClipboardFormat(type) - clipboard(type) performs
+    // format conversion which makes it more permissive and means
+    // it's a better way to check for the formats we're interested in
+    content = clipboard(type)
+    if (content && content.length > 0) {
         matchingType = type
-        content = clipboard(type)
         break
     }
 }
