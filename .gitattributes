@@ -1,3 +1,7 @@
 *.ps1           text
+*.ts            text
+*.json          text
+*.md            text
 .editorconfig   text
 .gitattributes  text
+.vscodeignore   text
