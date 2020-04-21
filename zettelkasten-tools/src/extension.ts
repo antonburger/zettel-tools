@@ -26,9 +26,15 @@ export function activate(context: vscode.ExtensionContext) {
 
         const deletionRange = editor.selection;
         const insertionPoint = editor.selection.active;
-        const copyQOutput = await runCopyQ("copyq", getCopyQScript([...mimeExtensions.keys()]));
+        const mimeTypes = [...mimeExtensions.keys()];
+        const copyQOutput = await runCopyQ("copyq", getCopyQScript(mimeTypes));
 
-        const [ sourceFilename, sourceMimeType ] = copyQOutput.split(/[\r\n]+/, 2);
+        const lines = copyQOutput.split(/[\r\n]+/);
+        if (lines.length < 1) {
+            return;
+        }
+
+        const [ sourceMimeType, sourceFilename ] = parseCopyQLine(lines[0], mimeTypes);
         const sourceUri = vscode.Uri.file(sourceFilename);
 
         const attachmentDirectory = workspaceFolder.uri.with({ path: workspaceFolder.uri.path + "/attachments" });
@@ -53,6 +59,13 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable);
+
+    function parseCopyQLine(copyQLine: string, mimeTypes: string[]): [string | undefined, string] {
+        const parts = copyQLine.split(":");
+        return parts[0] && mimeTypes.indexOf(parts[0]) >= 0
+            ? [ parts[0], parts.slice(1).join(":") ]
+            : [ undefined, copyQLine ];
+    }
 
     function createBaseName() {
         const date = new Date();
@@ -108,8 +121,7 @@ if (matchingType == 'text/plain' && str(content).indexOf('file:///') == 0) {
     file.setAutoRemove(false)
     file.write(content)
     file.close()
-    print(file.fileName() + '\\\\n')
-    print(matchingType)
+    print(matchingType + ':' + file.fileName())
 }
 `;
     }
