@@ -15,6 +15,18 @@
 				"kind": "build",
 				"isDefault": true
 			}
-		}
+        },
+        {
+            "type": "npm",
+            "script": "package",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        }
 	]
 }

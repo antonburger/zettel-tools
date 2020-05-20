@@ -4,6 +4,7 @@
     "description": "Extensions to make working with zettelkasten nicer",
     "publisher": "antonburger",
     "version": "0.0.1",
+    "repository": "https://github.com/antonburger/zettel-tools",
     "engines": {
         "vscode": "^1.44.0"
     },
@@ -32,6 +33,7 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
+        "package": "npx vsce package",
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts",
         "watch": "tsc -watch -p ./",
