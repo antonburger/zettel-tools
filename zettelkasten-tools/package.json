@@ -12,6 +12,7 @@
         "Other"
     ],
     "activationEvents": [
+        "onLanguage:markdown",
         "onCommand:zettelkasten-tools.pasteAttachment"
     ],
     "main": "./out/extension.js",
