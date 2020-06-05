@@ -1,12 +1,19 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
+import * as vscode from "vscode";
+import * as path from "path";
 
-export default class NoteDefinitionProvider implements vscode.DefinitionProvider {
+export default class NoteDefinitionProvider
+    implements vscode.DefinitionProvider {
     provideDefinition(
         document: vscode.TextDocument,
         position: vscode.Position,
-        token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location | vscode.Location[] | vscode.LocationLink[]> {
-        for (const result of matches(/\[[^]*?\]\(([^)]*?)\)/g, document.lineAt(position.line).text)) {
+        token: vscode.CancellationToken
+    ): vscode.ProviderResult<
+        vscode.Location | vscode.Location[] | vscode.LocationLink[]
+    > {
+        for (const result of matches(
+            /\[[^]*?\]\(([^)]*?)\)/g,
+            document.lineAt(position.line).text
+        )) {
             if (token.isCancellationRequested) {
                 return null;
             }
@@ -16,9 +23,14 @@ export default class NoteDefinitionProvider implements vscode.DefinitionProvider
                 break;
             } else if (position.character <= matchEnd) {
                 const docPath = document.uri.path;
-                const targetPath = path.normalize(path.join(path.dirname(docPath), result[1])).replace(/\\/g, '/');
+                const targetPath = path
+                    .normalize(path.join(path.dirname(docPath), result[1]))
+                    .replace(/\\/g, "/");
                 const targetUri = document.uri.with({ path: targetPath });
-                return new vscode.Location(targetUri, new vscode.Position(0, 0));
+                return new vscode.Location(
+                    targetUri,
+                    new vscode.Position(0, 0)
+                );
             }
         }
 
